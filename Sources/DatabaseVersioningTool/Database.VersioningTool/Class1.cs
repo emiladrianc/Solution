@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ClassLibrary
+namespace Database.VersioningTool
 {
     public class Class1
     {
