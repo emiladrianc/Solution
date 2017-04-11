@@ -68,9 +68,9 @@ namespace Database.VersioningTool.Tests.MigrationProvider
 			var migrations = provider.GetMigrations(0);
 
 			Assert.NotNull(migrations);
-			Assert.True(migrations.Any());
-			Assert.True(migrations[0].IsValid());
-			Assert.True(migrations[0].Version == 1);
+			Assert.True(migrations.Any(), "Migrations were not found");
+			Assert.True(migrations[0].IsValid(), "Migration is not valid");
+			Assert.True(migrations[0].Version == 1, string.Format("Migration.Version: expected: {0}, actual: {1}", 1, migrations[0].Version));
 			Assert.True(migrations[0].MigrationFiles.Any());
 			Assert.True(migrations[0].MigrationFiles.Count == 1);
 		}
@@ -86,9 +86,9 @@ namespace Database.VersioningTool.Tests.MigrationProvider
 			var migrations = provider.GetMigrations(0);
 
 			Assert.NotNull(migrations);
-			Assert.True(migrations.Any());
-			Assert.True(migrations[0].IsValid());
-			Assert.True(migrations[0].Version == 1);
+			Assert.True(migrations.Any(), "Migrations were not found");
+			Assert.True(migrations[0].IsValid(), "Migration is not valid");
+			Assert.True(migrations[0].Version == 1, string.Format("Migration.Version: expected: {0}, actual: {1}", 1, migrations[0].Version));
 			Assert.True(migrations[0].MigrationFiles.Any());
 			Assert.True(migrations[0].MigrationFiles.Count == 2);
 		}
@@ -104,9 +104,9 @@ namespace Database.VersioningTool.Tests.MigrationProvider
 			var migrations = provider.GetMigrations(0);
 
 			Assert.NotNull(migrations);
-			Assert.True(migrations.Any());
-			Assert.True(migrations[0].IsValid());
-			Assert.True(migrations[0].Version == 1);
+			Assert.True(migrations.Any(), "Migrations were not found");
+			Assert.True(migrations[0].IsValid(), "Migration is not valid");
+			Assert.True(migrations[0].Version == 1, string.Format("Migration.Version: expected: {0}, actual: {1}", 1, migrations[0].Version));
 			Assert.True(migrations[1].IsValid());
 			Assert.True(migrations[1].Version == 2);
 			Assert.True(migrations[2].IsValid());
@@ -126,13 +126,12 @@ namespace Database.VersioningTool.Tests.MigrationProvider
 			var migrations = provider.GetMigrations(2);
 
 			Assert.NotNull(migrations);
-			Assert.True(migrations.Any());
-			Assert.True(migrations[2].IsValid());
-			Assert.True(migrations[2].Version == 3);
-			Assert.True(migrations[3].IsValid());
-			Assert.True(migrations[3].Version == 4);
+			Assert.True(migrations.Any(), "Migrations were not found");
+			Assert.True(migrations[0].IsValid(), "Migration is not valid");
+			Assert.True(migrations[0].Version == 3, string.Format("Migration.Version: expected: {0}, actual: {1}", 1, migrations[0].Version));
+			Assert.True(migrations[1].IsValid());
+			Assert.True(migrations[1].Version == 4);
 		}
-
 
 		[Fact]
 		public void MultipleMigrationsnoNewMigrations()

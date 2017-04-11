@@ -1,0 +1,41 @@
+node {
+
+	try{
+
+		stage 'Check Out'
+		checkout scm
+		
+		stage 'Compile'
+		dir('sources/Solution/Common.Database.VersioningTool/'){
+			bat 'dotnet restore' 
+			bat 'dotnet build --configuration Release -o BuildArtefacts -f .NETStandard,Version=v1.6 --no-incremental' 
+		}	
+
+		stage 'Run tests'
+		dir('sources/Solution/Common.Database.VersioningTool.Tests/'){
+			bat 'dotnet restore' 
+			
+			bat 'dotnet build --configuration Release -o BuildArtefacts -f netcoreapp1.0 --no-incremental' 
+			
+			bat 'dotnet test --result=TestResults.html'		
+			
+			publishHTML(target: [allowMissing: true, alwaysLinkToLastBuild: false, keepAll: true, reportDir: '', reportFiles: 'TestResults.html', reportName: 'HTML Report'])
+			
+			}	
+
+		notify('Success')
+	}
+	catch(err){
+		notify("Error ${err}")
+		currentBuild.result = 'FAILURE'
+	}
+}
+
+def notify(status){
+    emailext (
+      to: "emil.cristurean@accenture.com",
+      subject: "${status}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+      body: """<p>${status}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+        <p>Check console output at <a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a></p>""",
+    )
+}

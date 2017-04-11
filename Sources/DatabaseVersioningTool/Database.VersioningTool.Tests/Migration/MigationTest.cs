@@ -23,8 +23,8 @@ namespace Database.VersioningTool.Tests.Migration
 
 			var migration = new Database.VersioningTool.Migration.Migration(_validVersion, migrationFiles);
 
-			Assert.True(migration.Version == _validVersion);
-			Assert.True(migration.MigrationFiles == migrationFiles);
+			Assert.True(migration.Version == _validVersion, String.Format("Version: Expected: {0}, actual: {1}", _validVersion, migration.Version));
+			Assert.True(migration.MigrationFiles == migrationFiles, "Migration files are not the same");
 		}
 		
 		[Fact]
@@ -33,7 +33,7 @@ namespace Database.VersioningTool.Tests.Migration
 			List<IMigrationFile> migrationFiles = new List<IMigrationFile>();
 
 			var migration = new Database.VersioningTool.Migration.Migration(-1, migrationFiles);
-			Assert.False(migration.IsValid());
+			Assert.False(migration.IsValid(), "Migration is valid");
 		}
 
 		[Fact]
@@ -42,7 +42,7 @@ namespace Database.VersioningTool.Tests.Migration
 			List<IMigrationFile> migrationFiles = new List<IMigrationFile>();
 
 			var migration = new Database.VersioningTool.Migration.Migration(0, migrationFiles);
-			Assert.False(migration.IsValid());
+			Assert.False(migration.IsValid(), "Migration is valid");
 		}
 
 		[Fact]
@@ -51,7 +51,7 @@ namespace Database.VersioningTool.Tests.Migration
 			List<IMigrationFile> migrationFiles = new List<IMigrationFile>();
 
 			var migration = new Database.VersioningTool.Migration.Migration(_validVersion, migrationFiles);
-			Assert.False(migration.IsValid());
+			Assert.False(migration.IsValid(), "Migration is valid");
 		}
 
 		[Fact]
@@ -64,7 +64,7 @@ namespace Database.VersioningTool.Tests.Migration
 			migrationFiles.Add(migrationFile.Object);
 
 			var migration = new Database.VersioningTool.Migration.Migration(_validVersion, migrationFiles);
-			Assert.False(migration.IsValid());
+			Assert.False(migration.IsValid(), "Migration is valid");
 		}
 
 		[Fact]
@@ -77,7 +77,7 @@ namespace Database.VersioningTool.Tests.Migration
 			migrationFiles.Add(migrationFile.Object);
 
 			var migration = new Database.VersioningTool.Migration.Migration(_validVersion, migrationFiles);
-			Assert.True(migration.IsValid());
+			Assert.True(migration.IsValid(), "Migration is not valid");
 		}
 	}
 }

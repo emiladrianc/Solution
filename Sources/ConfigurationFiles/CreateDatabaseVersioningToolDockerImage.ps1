@@ -1,0 +1,1 @@
+docker build -f .\Dockerfile.DatabaseVersioningTool -t solution/databaseversioningtoolimage .

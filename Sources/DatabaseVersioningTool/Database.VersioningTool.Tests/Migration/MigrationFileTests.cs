@@ -35,7 +35,7 @@ namespace Database.VersioningTool.Tests.Migration
 		{
 			var migrationFile = new MigrationFile(0, _validName, _validContent);
 
-			Assert.False(migrationFile.IsValid());
+			Assert.False(migrationFile.IsValid(), "Migration file is valid");
 		}
 
 
@@ -44,7 +44,7 @@ namespace Database.VersioningTool.Tests.Migration
 		{
 			var migrationFile = new MigrationFile(1, null, _validContent);
 
-			Assert.False(migrationFile.IsValid());
+			Assert.False(migrationFile.IsValid(), "Migration file is valid");
 		}
 
 		[Fact]
@@ -52,7 +52,7 @@ namespace Database.VersioningTool.Tests.Migration
 		{
 			var migrationFile = new MigrationFile(1, string.Empty, _validContent);
 
-			Assert.False(migrationFile.IsValid());
+			Assert.False(migrationFile.IsValid(), "Migration file is valid");
 		}
 
 		[Fact]
@@ -60,7 +60,7 @@ namespace Database.VersioningTool.Tests.Migration
 		{
 			var migrationFile = new MigrationFile(1, _validName, null);
 
-			Assert.False(migrationFile.IsValid());
+			Assert.False(migrationFile.IsValid(), "Migration file is valid");
 		}
 
 		[Fact]
@@ -68,7 +68,7 @@ namespace Database.VersioningTool.Tests.Migration
 		{
 			var migrationFile = new MigrationFile(1, _validName, string.Empty);
 
-			Assert.False(migrationFile.IsValid());
+			Assert.False(migrationFile.IsValid(), "Migration file is valid");
 		}
 
 		[Fact]
@@ -76,7 +76,7 @@ namespace Database.VersioningTool.Tests.Migration
 		{
 			var migrationFile = new MigrationFile(1, _validName, _validContent);
 
-			Assert.True(migrationFile.IsValid());
+			Assert.True(migrationFile.IsValid(), "Migration file is not valid");
 		}
 
 	}
