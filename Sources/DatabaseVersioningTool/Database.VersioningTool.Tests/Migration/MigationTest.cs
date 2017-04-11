@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Database.VersioningTool.Migration;
+using Moq;
 using Xunit;
 
 namespace Database.VersioningTool.Tests.Migration
@@ -10,62 +9,75 @@ namespace Database.VersioningTool.Tests.Migration
 	public class MigationTest
 	{
 		private const int _validVersion = 1;
+		
+		[Fact]
+		public void MigrationFilesShoudBeSet()
+		{
+			Assert.Throws<ArgumentNullException>(() => new Database.VersioningTool.Migration.Migration(_validVersion, null));
+		}
 
+		[Fact]
+		public void TestGetMethods()
+		{
+			List<IMigrationFile> migrationFiles = new List<IMigrationFile>();
+
+			var migration = new Database.VersioningTool.Migration.Migration(_validVersion, migrationFiles);
+
+			Assert.True(migration.Version == _validVersion);
+			Assert.True(migration.MigrationFiles == migrationFiles);
+		}
+		
 		[Fact]
 		public void VersionShoudBePositive()
 		{
-			Assert.Throws<ArgumentException>(() => new Database.VersioningTool.Migration.Migration(-1, null));
+			List<IMigrationFile> migrationFiles = new List<IMigrationFile>();
+
+			var migration = new Database.VersioningTool.Migration.Migration(-1, migrationFiles);
+			Assert.False(migration.IsValid());
 		}
 
 		[Fact]
 		public void VersionShoudNotBeZero()
 		{
-			Assert.Throws<ArgumentException>(() => new Database.VersioningTool.Migration.Migration(0, null));
-		}
+			List<IMigrationFile> migrationFiles = new List<IMigrationFile>();
 
-		[Fact]
-		public void TestGetVersion()
-		{
-			List<MigrationFile> migrationFiles = new List<MigrationFile>();
-			var migrationFile = new MigrationFile(1, "Test", "Test");
-
-			migrationFiles.Add(migrationFile);
-			var migration = new Database.VersioningTool.Migration.Migration(_validVersion, migrationFiles);
-
-			Assert.True(migration.Version == _validVersion);
-		}
-
-		[Fact]
-		public void MigrationFilesShoudBeSet()
-		{
-			Assert.Throws<ArgumentException>(() => new Database.VersioningTool.Migration.Migration(_validVersion, null));
+			var migration = new Database.VersioningTool.Migration.Migration(0, migrationFiles);
+			Assert.False(migration.IsValid());
 		}
 
 		[Fact]
 		public void MigrationFilesShoudContainAtLeastAFile()
 		{
-			Assert.Throws<ArgumentException>(() => new Database.VersioningTool.Migration.Migration(_validVersion, new List<MigrationFile>()));
+			List<IMigrationFile> migrationFiles = new List<IMigrationFile>();
+
+			var migration = new Database.VersioningTool.Migration.Migration(_validVersion, migrationFiles);
+			Assert.False(migration.IsValid());
 		}
 
 		[Fact]
-		public void TestGetMigrationFiles()
+		public void MigrationFilesShoudContainAtLeastAValidFile()
 		{
+			List<IMigrationFile> migrationFiles = new List<IMigrationFile>();
 
-			List<MigrationFile> migrationFiles = new List<MigrationFile>();
-			var migrationFile = new MigrationFile(1, "Test", "Test");
-
-			migrationFiles.Add(migrationFile);
+			Mock<IMigrationFile> migrationFile = new Mock<IMigrationFile>();
+			migrationFile.Setup(x => x.IsValid()).Returns(false);
+			migrationFiles.Add(migrationFile.Object);
 
 			var migration = new Database.VersioningTool.Migration.Migration(_validVersion, migrationFiles);
-			Assert.True(migration.MigrationFiles.Any());
-
-			Assert.True(migration.MigrationFiles[0].Order == migrationFile.Order);
-			Assert.True(migration.MigrationFiles[0].Name == migrationFile.Name);
-			Assert.True(migration.MigrationFiles[0].Content == migrationFile.Content);
-
-
+			Assert.False(migration.IsValid());
 		}
 
+		[Fact]
+		public void IsValid()
+		{
+			List<IMigrationFile> migrationFiles = new List<IMigrationFile>();
 
+			Mock<IMigrationFile> migrationFile = new Mock<IMigrationFile>();
+			migrationFile.Setup(x => x.IsValid()).Returns(true);
+			migrationFiles.Add(migrationFile.Object);
+
+			var migration = new Database.VersioningTool.Migration.Migration(_validVersion, migrationFiles);
+			Assert.True(migration.IsValid());
+		}
 	}
 }

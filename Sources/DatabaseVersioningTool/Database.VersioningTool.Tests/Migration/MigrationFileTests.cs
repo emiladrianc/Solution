@@ -13,63 +13,70 @@ namespace Database.VersioningTool.Tests.Migration
 		private const string _validContent = "Content";
 
 		[Fact]
-		public void OrderShouldBePositive()
-		{
-			Assert.Throws<ArgumentException>(() => new MigrationFile(-1, null, null));
-		}
-
-		[Fact]
-		public void OrderShouldNotBeZero()
-		{
-			Assert.Throws<ArgumentException>(() => new MigrationFile(0, null, null));
-		}
-
-		[Fact]
-		public void TestGetOrder()
+		public void TestGetMethods()
 		{
 			var migrationFile = new MigrationFile(_validOrder, _validName, _validContent);
 
 			Assert.True(migrationFile.Order == _validOrder);
+			Assert.True(migrationFile.Name == _validName);
+			Assert.True(migrationFile.Content == _validContent);
 		}
+
+		[Fact]
+		public void OrderNotValid()
+		{
+			var migrationFile = new MigrationFile(-1, _validName, _validContent);
+
+			Assert.False(migrationFile.IsValid());
+		}
+
+		[Fact]
+		public void OrderShouldBePositive()
+		{
+			var migrationFile = new MigrationFile(0, _validName, _validContent);
+
+			Assert.False(migrationFile.IsValid());
+		}
+
 
 		[Fact]
 		public void NameShouldBeSet()
 		{
-			Assert.Throws<ArgumentException>(() => new MigrationFile(_validOrder, null, null));
+			var migrationFile = new MigrationFile(1, null, _validContent);
+
+			Assert.False(migrationFile.IsValid());
 		}
 
 		[Fact]
 		public void NameShouldNotBeEmpty()
 		{
-			Assert.Throws<ArgumentException>(() => new MigrationFile(_validOrder, string.Empty, null));
-		}
+			var migrationFile = new MigrationFile(1, string.Empty, _validContent);
 
-		[Fact]
-		public void TestGetName()
-		{			
-			var migrationFile = new MigrationFile(_validOrder, _validName, _validContent);
-
-			Assert.True(migrationFile.Name == _validName);
+			Assert.False(migrationFile.IsValid());
 		}
 
 		[Fact]
 		public void ContentShouldBeSet()
 		{
-			Assert.Throws<ArgumentException>(() => new MigrationFile(_validOrder, _validName, null));
+			var migrationFile = new MigrationFile(1, _validName, null);
+
+			Assert.False(migrationFile.IsValid());
 		}
 
 		[Fact]
 		public void ContentShouldNotBeEmpty()
 		{
-			Assert.Throws<ArgumentException>(() => new MigrationFile(_validOrder, _validName, string.Empty));
+			var migrationFile = new MigrationFile(1, _validName, string.Empty);
+
+			Assert.False(migrationFile.IsValid());
 		}
 
 		[Fact]
-		public void TestGetContent()
+		public void IsValid()
 		{
-			var migrationFile = new MigrationFile(_validOrder, _validName, _validContent);
+			var migrationFile = new MigrationFile(1, _validName, _validContent);
 
-			Assert.True(migrationFile.Content == _validContent);
+			Assert.True(migrationFile.IsValid());
 		}
 
 	}
