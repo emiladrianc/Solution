@@ -17,9 +17,9 @@ node {
 			
 			bat 'dotnet build --configuration Release -o BuildArtefacts --no-incremental' 
 			
-			bat ' dotnet xunit -configuration Release -parallel all -xml TestResults.xml'		
+			bat ' dotnet xunit -configuration Release -parallel all -xml TestResults/TestResults.xml'		
 			
-			publishHTML(target: [allowMissing: true, alwaysLinkToLastBuild: false, keepAll: true, reportDir: '', reportFiles: 'TestResults.html', reportName: 'HTML Report'])
+			publishHTML(target: [allowMissing: true, alwaysLinkToLastBuild: false, keepAll: true, reportDir: 'TestResults', reportFiles: 'TestResults.html', reportName: 'HTML Report'])
 			
 			}	
 
