@@ -17,7 +17,7 @@ node {
 			
 			bat 'dotnet build --configuration Release -o BuildArtefacts --no-incremental' 
 			
-			bat 'dotnet test --result=TestResults.html'		
+			bat 'dotnet test'		
 			
 			publishHTML(target: [allowMissing: true, alwaysLinkToLastBuild: false, keepAll: true, reportDir: '', reportFiles: 'TestResults.html', reportName: 'HTML Report'])
 			
